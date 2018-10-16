@@ -55,6 +55,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
     public void clearCurrentSelection(){
         if(currentSelection != -1){
+
             mRecyclerAdapter.mViewHolder holder = (mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection);
             if(holder != null){
                 holder.wrapper.setBackgroundColor(Color.TRANSPARENT);
@@ -89,6 +90,8 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        fragmentView=null;
+        container.removeAllViews();
         fragmentView = inflater.inflate(R.layout.fragment_editor_recycler, container, false);
         return fragmentView;
     }

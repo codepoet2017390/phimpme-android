@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -225,7 +226,8 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             val = params[0];
             if (srcBitmap != null && !srcBitmap.isRecycled()) {
                 srcBitmap.recycle();
-            }
+                Log.d("helaa","yahin hua hai");
+                            }
             if (currentBitmap != null) {
                 srcBitmap = Bitmap.createBitmap(currentBitmap.copy(
                         Bitmap.Config.RGB_565, true));

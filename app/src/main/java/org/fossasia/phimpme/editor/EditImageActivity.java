@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -90,7 +91,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     /**
      * Number of times image has been edited. Indicates whether image has been edited or not.
      */
-    protected int mOpTimes = 0;
+    static protected int mOpTimes = 0;
     protected boolean isBeenSaved = false;
 
     private LoadImageTask mLoadImageTask;
@@ -147,19 +148,29 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public RotateFragment rotateFragment;
     public FrameFragment frameFragment;
     private static String stickerType;
+    private boolean check=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
-
+        if (mainBitmap != null) {
+                mainBitmap.recycle();
+                mainBitmap = null;
+                System.gc();
+            }
+        Log.d("helaa","Optimes"+mOpTimes);
         checkInitImageLoader();
         setContentView(R.layout.activity_image_edit);
         ButterKnife.bind(this);
         initView();
         if (savedInstanceState != null) {
             mode =  savedInstanceState.getInt("PREVIOUS_FRAGMENT");
+            check=true;
+            //changeMiddleFragment();
+        //    changeBottomFragment(mode);
+            mainBitmap=savedInstanceState.getParcelable("Edited Bitmap");
         }
         getData();
     }
@@ -173,7 +184,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 .beginTransaction()
                 .add(R.id.controls_container, mainMenuFragment)
                 .commit();
-
         changeMiddleFragment(mode);
 
         setButtonsVisibility();
@@ -189,6 +199,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             saveFilePath = bundle.getString(EXTRA_OUTPUT);
             requestCode = bundle.getInt("requestCode", 1);
             loadImage(filePath);
+            //highLightSelectedOption(mode);
             return;
         }
         SnackBarHandler.show(parentLayout,R.string.image_invalid);
@@ -316,6 +327,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 .beginTransaction()
                 .replace(R.id.controls_container, getFragment(index))
                 .commit();
+        Log.d("helaaa","moptimes"+mOpTimes);
 
         setButtonsVisibility();
     }
@@ -466,14 +478,28 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             mLoadImageTask.cancel(true);
 
         }
-        mLoadImageTask = new LoadImageTask();
-        mLoadImageTask.execute(filepath);
+
+        if(mainBitmap==null)
+            Log.d("helaaa","main bitmap was null");
+
+        if (check && mOpTimes > 0) {
+            check = false;
+            mainImage.setImageBitmap(mainBitmap);
+            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+            originalBitmap = mainBitmap.copy(mainBitmap.getConfig(), true);
+            addToUndoList();
+            setInitialFragments();
+        } else {
+            mLoadImageTask = new LoadImageTask();
+            mLoadImageTask.execute(filepath);
+        }
     }
 
     protected void doSaveImage() {
         if (mSaveImageTask != null) {
             mSaveImageTask.cancel(true);
         }
+        Log.d("helaaa","moptimes"+" "+ mOpTimes);
 
         mSaveImageTask = new SaveImageTask();
         mSaveImageTask.execute(mainBitmap);
@@ -597,11 +623,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         @Override
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
-            if (mainBitmap != null) {
-                mainBitmap.recycle();
-                mainBitmap = null;
-                System.gc();
-            }
             mainBitmap = result;
             mainImage.setImageBitmap(result);
             mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
@@ -659,6 +680,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("PREVIOUS_FRAGMENT", mode);
+        outState.putParcelable("Edited Bitmap",mainBitmap);
     }
 
     @Override

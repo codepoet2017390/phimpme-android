@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -38,7 +39,10 @@ public class StickerView extends View {
     public ImageViewTouch mainImage;
     private float leftX, rightX, topY, bottomY;
 
-    private LinkedHashMap<Integer, StickerItem> bank = new LinkedHashMap<Integer, StickerItem>();//Storing each data map
+
+    public static LinkedHashMap<Integer, StickerItem> bank;
+
+     //Storing each data map
 
     public StickerView(Context context) {
         super(context);
@@ -49,6 +53,9 @@ public class StickerView extends View {
         super(context, attrs);
         init(context);
     }
+
+
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -68,6 +75,11 @@ public class StickerView extends View {
 
     private void init(Context context) {
         this.mContext = context;
+        if(bank==null || bank.size()==0) {
+            Log.d("helaa","bank was null");
+            bank = new LinkedHashMap<Integer, StickerItem>();
+            bank.put(++imageCount,new StickerItem(context));
+        }
         currentStatus = STATUS_IDLE;
 
         rectPaint.setColor(Color.RED);
@@ -77,11 +89,14 @@ public class StickerView extends View {
 
     public void addBitImage(final Bitmap addBit) {
         StickerItem item = new StickerItem(this.getContext());
+        Log.d("helaaa","Bitmap : "+addBit);
+
         item.init(addBit, this);
         if (currentItem != null) {
             currentItem.isDrawHelpTool = false;
         }
         bank.put(++imageCount, item);
+        Log.d("helaaa","bank: "+bank.size());
         this.invalidate();// 重绘视图
     }
 
@@ -91,11 +106,25 @@ public class StickerView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Log.d("helaaa","On Draw");
+        //Log.d("helaa","bank size"+bank.size());
+        if(bank==null)
+        {
+            Log.d("helaa","bank NULL");
+            bank=new LinkedHashMap<>();
+        }
         // System.out.println("on draw!!~");
+        Log.d("helxaaa","Bank"+bank);
         for (Integer id : bank.keySet()) {
-            StickerItem item = bank.get(id);
-            canvas.clipRect(leftX, topY, rightX, bottomY);
-            item.draw(canvas);
+
+            if(id!=1) {
+                StickerItem item = bank.get(id);
+                Log.d("helxaaa", "item: " + item);
+
+                Log.d("helaa", "Actually Drawing the item");
+                canvas.clipRect(leftX, topY, rightX, bottomY);
+                item.draw(canvas);
+            }
         }// end for each
     }
 
@@ -116,7 +145,8 @@ public class StickerView extends View {
 
                 int deleteId = -1;
                 for (Integer id : bank.keySet()) {
-                    StickerItem item = bank.get(id);
+                    if (id != 1){
+                        StickerItem item = bank.get(id);
                     if (item.detectDeleteRect.contains(x, y)) {// Delete mode
                         // ret = true;
                         deleteId = id;
@@ -144,6 +174,7 @@ public class StickerView extends View {
                         oldy = y;
                     }
                 }
+        }
 
                 if (!ret && currentItem != null && currentStatus == STATUS_IDLE) {// No map is selected
                     currentItem.isDrawHelpTool = false;
@@ -188,6 +219,7 @@ public class StickerView extends View {
         }
         return ret;
     }
+
 
     public LinkedHashMap<Integer, StickerItem> getBank() {
         return bank;
