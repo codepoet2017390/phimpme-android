@@ -22,7 +22,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
                                                         SeekBar.OnSeekBarChangeListener {
 
     SeekBar seekBar;
-    private int SeekBarProgress=-1;
+    static private int SeekBarProgress;
     ImageButton cancel,apply;
     public Bitmap filterBit;
     Bitmap currentBitmap;
@@ -54,14 +54,17 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
         cancel.setOnClickListener(this);
         apply.setOnClickListener(this);
-
+        Log.d("helaaa","On Activity Created");
         seekBar.setMax(100);
         if(savedInstanceState!=null) {
             SeekBarProgress = savedInstanceState.getInt("Seekbar Progress");
+            Log.d("helaaa","Seekbar Progress saved instances wala"+SeekBarProgress);
         }
-        setDefaultSeekBarProgress();
-        seekBar.setOnSeekBarChangeListener(this);
 
+        setDefaultSeekBarProgress();
+        Log.d("helaaa","Seekbar Progress:::::::"+SeekBarProgress);
+        seekBar.setOnSeekBarChangeListener(this);
+        Log.d("helaaa","Seekbar Progress:::::::"+SeekBarProgress);
         onShow();
     }
 
@@ -69,6 +72,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("Seekbar Progress",seekBar.getProgress());
+        outState.putParcelable("FilterBit",filterBit);
     }
 
     private void setDefaultSeekBarProgress() {
@@ -76,11 +80,13 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             switch (EditImageActivity.effectType/100) {
                 case EditImageActivity.MODE_FILTERS:
 
+                    Log.d("helaaa", "setDefaultSeekBarProgress me:: "+SeekBarProgress);
                     if(SeekBarProgress>0)
                     {
                         seekBar.setProgress(SeekBarProgress);
                     }
                     else {
+                        Log.d("helaa","Setting to 100");
                         seekBar.setProgress(100);
                     }
                     break;
@@ -184,7 +190,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.seekbar_cancel:
-                backToMain();
+                //backToMain();
                 break;
             case R.id.seekbar_apply:
                 if (filterBit!=null) {
@@ -194,7 +200,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
                 if (EditImageActivity.effectType / 100 ==  EditImageActivity.MODE_FILTERS){
                     activity.filterFragment.onShow();
                 }
-                backToMain();
+                //backToMain();
                 break;
         }
     }
@@ -239,6 +245,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+        Log.d("helaaa","Process Image task ko call lag rahi hai");
         ProcessImageTask processImageTask = new ProcessImageTask();
         processImageTask.execute(seekBar.getProgress());
     }

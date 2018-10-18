@@ -180,9 +180,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Calleter onCreate() when the activity is first started. Loads the initial default fragments.
      */
     private void setInitialFragments() {
+        Log.d("helaaa","SetInitialFragments");
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.controls_container, mainMenuFragment)
+                .replace(R.id.controls_container, mainMenuFragment)
                 .commit();
         changeMiddleFragment(mode);
 

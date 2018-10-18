@@ -69,6 +69,8 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         setRetainInstance(true);
     }
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -80,7 +82,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             layoutManager = new LinearLayoutManager(getActivity());
         }
         recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
-
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new mRecyclerAdapter());
         this.mStickerView = activity.mStickerView;
@@ -94,6 +95,12 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         container.removeAllViews();
         fragmentView = inflater.inflate(R.layout.fragment_editor_recycler, container, false);
         return fragmentView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("hella",5);
     }
 
     @Override
