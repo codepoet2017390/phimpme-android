@@ -60,7 +60,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         if(savedInstanceState!=null) {
             SeekBarProgress = savedInstanceState.getInt("Seekbar Progress");
         }
-
         setDefaultSeekBarProgress();
         seekBar.setOnSeekBarChangeListener(this);
         onShow();
@@ -154,7 +153,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     @Override
     public void onShow() {
-
         if (activity!=null) {
             setDefaultSeekBarProgress();
             activity.changeMode(EditImageActivity.MODE_SLIDER);
@@ -209,20 +207,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             activity.changeMode(EditImageActivity.effectType / 100);
             activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
             activity.mainImage.setScaleEnabled(true);
-
-            switch (activity.mode)
-            {
-                case EditImageActivity.MODE_FILTERS:
-                    //activity.filterFragment.clearCurrentSelection();
-                    break;
-
-                case EditImageActivity.MODE_ENHANCE:
-                    //activity.enhanceFragment.clearCurrentSelection();
-                    break;
-
-                default:
-                    break;
-            }
         }
     }
 

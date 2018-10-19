@@ -66,8 +66,6 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
 
     }
 
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

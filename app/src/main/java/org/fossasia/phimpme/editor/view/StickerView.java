@@ -54,9 +54,6 @@ public class StickerView extends View {
         init(context);
     }
 
-
-
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -80,7 +77,6 @@ public class StickerView extends View {
             bank.put(++imageCount,new StickerItem(context));
         }
         currentStatus = STATUS_IDLE;
-
         rectPaint.setColor(Color.RED);
         rectPaint.setAlpha(100);
 
