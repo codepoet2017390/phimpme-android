@@ -76,7 +76,6 @@ public class StickerView extends View {
     private void init(Context context) {
         this.mContext = context;
         if(bank==null || bank.size()==0) {
-            Log.d("helaa","bank was null");
             bank = new LinkedHashMap<Integer, StickerItem>();
             bank.put(++imageCount,new StickerItem(context));
         }
@@ -89,14 +88,15 @@ public class StickerView extends View {
 
     public void addBitImage(final Bitmap addBit) {
         StickerItem item = new StickerItem(this.getContext());
-        Log.d("helaaa","Bitmap : "+addBit);
-
         item.init(addBit, this);
         if (currentItem != null) {
             currentItem.isDrawHelpTool = false;
         }
+        /*Need to put a sample item which is not a sticker in bank because whenever config is changed
+          bank is copied to a new address thus changing the address of the first element of bank
+          which should not be a sticker as stickers are drawn of basis of their addresses
+                 */
         bank.put(++imageCount, item);
-        Log.d("helaaa","bank: "+bank.size());
         this.invalidate();// 重绘视图
     }
 
@@ -106,22 +106,15 @@ public class StickerView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.d("helaaa","On Draw");
-        //Log.d("helaa","bank size"+bank.size());
         if(bank==null)
         {
-            Log.d("helaa","bank NULL");
             bank=new LinkedHashMap<>();
         }
         // System.out.println("on draw!!~");
-        Log.d("helxaaa","Bank"+bank);
         for (Integer id : bank.keySet()) {
 
             if(id!=1) {
                 StickerItem item = bank.get(id);
-                Log.d("helxaaa", "item: " + item);
-
-                Log.d("helaa", "Actually Drawing the item");
                 canvas.clipRect(leftX, topY, rightX, bottomY);
                 item.draw(canvas);
             }

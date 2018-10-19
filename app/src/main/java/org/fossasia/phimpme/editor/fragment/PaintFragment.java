@@ -77,7 +77,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
 
     @Override
     public void onDetach() {
-       // resetPaintView();
         super.onDetach();
     }
 
@@ -117,7 +116,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
             mStokeWidth=savedInstanceState.getFloat("Stoke Width");
         }
         if(mStokeColor !=Integer.MIN_VALUE && mStokeWidth!=Integer.MIN_VALUE) {
-            Log.d("helaaa","we are here");
             mPaintModeView.setPaintStrokeColor(mStokeColor);
             mPaintModeView.setPaintStrokeWidth(mStokeWidth);
             setPaintColor(mStokeColor);
@@ -169,7 +167,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     public void backToMain() {
         activity.changeMode(EditImageActivity.MODE_WRITE);
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
-//        activity.writeFragment.clearSelection();
         activity.mainImage.setVisibility(View.VISIBLE);
         this.mPaintView.reset();
         this.mPaintView.setVisibility(View.GONE);

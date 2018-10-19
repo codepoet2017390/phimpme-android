@@ -18,6 +18,8 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.filter.PhotoProcessing;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 
+import static com.android.volley.VolleyLog.TAG;
+
 public class SliderFragment extends BaseEditFragment implements View.OnClickListener,
                                                         SeekBar.OnSeekBarChangeListener {
 
@@ -54,17 +56,13 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
         cancel.setOnClickListener(this);
         apply.setOnClickListener(this);
-        Log.d("helaaa","On Activity Created");
         seekBar.setMax(100);
         if(savedInstanceState!=null) {
             SeekBarProgress = savedInstanceState.getInt("Seekbar Progress");
-            Log.d("helaaa","Seekbar Progress saved instances wala"+SeekBarProgress);
         }
 
         setDefaultSeekBarProgress();
-        Log.d("helaaa","Seekbar Progress:::::::"+SeekBarProgress);
         seekBar.setOnSeekBarChangeListener(this);
-        Log.d("helaaa","Seekbar Progress:::::::"+SeekBarProgress);
         onShow();
     }
 
@@ -79,14 +77,12 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         if (null != seekBar) {
             switch (EditImageActivity.effectType/100) {
                 case EditImageActivity.MODE_FILTERS:
-
-                    Log.d("helaaa", "setDefaultSeekBarProgress me:: "+SeekBarProgress);
                     if(SeekBarProgress>0)
                     {
                         seekBar.setProgress(SeekBarProgress);
                     }
                     else {
-                        Log.d("helaa","Setting to 100");
+                        Log.d(TAG, "setDefaultSeekBarProgress:Setting to 100");
                         seekBar.setProgress(100);
                     }
                     break;
@@ -246,7 +242,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        Log.d("helaaa","Process Image task ko call lag rahi hai");
         ProcessImageTask processImageTask = new ProcessImageTask();
         processImageTask.execute(seekBar.getProgress());
     }
@@ -262,7 +257,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             val = params[0];
             if (srcBitmap != null && !srcBitmap.isRecycled()) {
                 srcBitmap.recycle();
-                Log.d("helaa","yahin hua hai");
                             }
             if (currentBitmap != null) {
                 srcBitmap = Bitmap.createBitmap(currentBitmap.copy(

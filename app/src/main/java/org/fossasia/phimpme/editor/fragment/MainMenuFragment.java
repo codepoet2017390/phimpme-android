@@ -28,7 +28,6 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("helaaa","Iska OnCreate");
         View view = inflater.inflate(R.layout.fragment_editor_main, container, false);
         context = getActivity();
         menu_filter = view.findViewById(R.id.menu_filter);

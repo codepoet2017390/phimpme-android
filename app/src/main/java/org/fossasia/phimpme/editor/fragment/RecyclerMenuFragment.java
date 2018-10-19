@@ -57,10 +57,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     }
 
     public void clearCurrentSelection(){
-        if(recyclerView==null)
-        {
-            Log.d("helaa","it was null");
-        }
         if(currentSelection != -1){
 
             mRecyclerAdapter.mViewHolder holder = (mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection);
@@ -107,7 +103,8 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("hella",5);
+        //adding sample element just so that outState is not null
+        outState.putInt("sample element",5);
     }
 
     @Override
@@ -138,10 +135,8 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         if (MODE == EditImageActivity.MODE_FILTERS) {
             if(activity==null)
             {
-                Log.d("helaaa","were hereeeee");
              activity=mActivity;
             }
-            Log.d("helaaa","OnShowwwwwwww");
             if (this.currentBitmap != activity.mainBitmap) filterThumbs = null;
             this.currentBitmap = activity.mainBitmap;
             getFilterThumbs();

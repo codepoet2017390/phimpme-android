@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.mikepenz.iconics.Iconics.TAG;
 import static org.fossasia.phimpme.editor.EditImageActivity.mode;
 
 public class StickersFragment extends BaseEditFragment implements View.OnClickListener {
@@ -93,13 +94,8 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         adapter = new mRecyclerAdapter();
         recyclerView.setAdapter(adapter);
        // activity.stickersFragment= (StickersFragment) activity.getFragment(EditImageActivity.MODE_STICKERS);
-        if(activity.mStickerView==null)
-            Log.d("helaaa","NUll");
 
         this.mStickerView = activity.mStickerView;
-//        if(savedInstanceState!=null )
-//        activity.mStickerView.bank=(LinkedHashMap<Integer, StickerItem>) savedInstanceState.getSerializable("bank");
-
         onShow();
 
 
@@ -108,8 +104,6 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
             mData=savedInstanceState.getString("Sticker position");
             if(mData!=null)
             {
-                Log.d("helaaa","selscted item called");
-              //  mStickerView.bank= (LinkedHashMap<Integer, StickerItem>) savedInstanceState.getSerializable("bank");
                 selectedStickerItem(mData);
             }
         }
@@ -126,9 +120,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         container.removeAllViews();
-        Log.d("helaaa","ON crreate View");
         if(fragmentView!=null) {
-            Log.d("helaa","fragment View was not null");
            fragmentView.findViewById(R.id.sticker_cancel).setVisibility(View.GONE);
            fragmentView.findViewById(R.id.sticker_apply).setVisibility(View.GONE);
                      fragmentView = null;
@@ -139,18 +131,14 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
 
     @Override
     public void onShow() {
-        Log.d("helaa","Onshow called");
         if (activity.mainBitmap == null) {
             getActivity().getSupportFragmentManager().beginTransaction().remove(StickersFragment.this).commit();
             return;
         }
         activity.changeMode(EditImageActivity.MODE_STICKERS);
         if(this.mStickerView==null)
-            Log.d("helaaa", "onShow:me this.mstickerview is null ");
-//        if(activity.stickersFragment.getmStickerView()==null)
-//        {
-//            Log.d("helaaa","IS nuLL");
-//        }
+            Log.d(TAG, "onShow:this.mstickerview is null ");
+
             getmStickerView().mainImage = activity.mainImage;
             getmStickerView().mainBitmap = activity.mainBitmap;
             getmStickerView().setVisibility(View.VISIBLE);
@@ -159,12 +147,9 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d("helaaa","Sticker fragment onsaved instance");
         if(mData!=null)
                 {
             outState.putString("Sticker position",mData);
-            //outState.putParcelable("Sticker View",mStickerView);
-            ///outState.putSerializable("bank",mStickerView.bank);
         }
 
     }
@@ -183,8 +168,6 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     }
 
     public void selectedStickerItem(String path) {
-        Log.d("helaaa","Add bitImage called");
-        Log.d("helaaaa","path: "+path);
         mStickerView.addBitImage(getImageFromAssetsFile(path));
     }
 

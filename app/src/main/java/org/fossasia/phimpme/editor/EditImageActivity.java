@@ -160,7 +160,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 mainBitmap = null;
                 System.gc();
             }
-        Log.d("helaa","Optimes"+mOpTimes);
         checkInitImageLoader();
         setContentView(R.layout.activity_image_edit);
         ButterKnife.bind(this);
@@ -168,8 +167,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if (savedInstanceState != null) {
             mode =  savedInstanceState.getInt("PREVIOUS_FRAGMENT");
             check=true;
-            //changeMiddleFragment();
-            // changeBottomFragment(mode);
             mainBitmap=savedInstanceState.getParcelable("Edited Bitmap");
         }
         getData();
@@ -180,7 +177,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Calleter onCreate() when the activity is first started. Loads the initial default fragments.
      */
     private void setInitialFragments() {
-        Log.d("helaaa","SetInitialFragments");
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.controls_container, mainMenuFragment)
@@ -323,7 +319,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 .beginTransaction()
                 .replace(R.id.controls_container, getFragment(index))
                 .commit();
-        Log.d("helaaa","moptimes"+mOpTimes);
 
         setButtonsVisibility();
     }
@@ -475,9 +470,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
         }
 
-        if(mainBitmap==null)
-            Log.d("helaaa","main bitmap was null");
-
         if (check && mOpTimes > 0) {
             check = false;
             mainImage.setImageBitmap(mainBitmap);
@@ -495,8 +487,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if (mSaveImageTask != null) {
             mSaveImageTask.cancel(true);
         }
-        Log.d("helaaa","moptimes"+" "+ mOpTimes);
-
         mSaveImageTask = new SaveImageTask();
         mSaveImageTask.execute(mainBitmap);
     }
