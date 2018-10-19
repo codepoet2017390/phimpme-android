@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,10 +41,12 @@ public class CropFragment extends BaseEditFragment {
 	private View cancel,apply;
 	public CropImageView mCropPanel;
 	private LinearLayout ratioList,imageList;
+	private static RectF rec;
 	private static List<RatioItem> dataList = new ArrayList<RatioItem>();
 	private List<TextView> textViewList = new ArrayList<TextView>();
 
 	public static int SELECTED_COLOR = Color.BLUE;
+	private static TextView sView;
 	public static int UNSELECTED_COLOR = Color.BLACK;
 	private CropRationClick mCropRationClick = new CropRationClick();
 	public TextView selctedTextView;
@@ -73,7 +76,8 @@ public class CropFragment extends BaseEditFragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		resetCropView();
+		Log.d("helaaa","OnDetach");
+		//resetCropView();
 	}
 
 	private void resetCropView() {
@@ -112,6 +116,7 @@ public class CropFragment extends BaseEditFragment {
             imageList.addView(image,params);
             text.setTag(i);
 			if (i == 0) {
+				if(selctedTextView==null)
 				selctedTextView = text;
 			}
 			dataList.get(i).setIndex(i);
@@ -125,11 +130,14 @@ public class CropFragment extends BaseEditFragment {
 		@Override
 		public void onClick(View v) {
 			TextView curTextView = (TextView) v;
+			Log.d("helaaa","here");
 			selctedTextView.setTextColor(UNSELECTED_COLOR);
 			RatioItem dataItem = (RatioItem) v.getTag();
 			selctedTextView = curTextView;
 			selctedTextView.setTextColor(SELECTED_COLOR);
-
+			sView=selctedTextView;
+			sView.setTag(v.getTag());
+			Log.d("helaaa", "onClick: ka sView"+sView);
 			mCropPanel.setRatioCropRect(activity.mainImage.getBitmapRect(),
 					dataItem.getRatio());
 		}
@@ -153,19 +161,53 @@ public class CropFragment extends BaseEditFragment {
 				applyCropImage();
 			}
 		});
+		if(savedInstanceState!=null)
+		{
+			Log.d("helaaa", "onActivityCreated: ka saved Instance ");
+			rec=savedInstanceState.getParcelable("Rect");
+		}
 		onShow();
 	}
 
-    @Override
-    public void onShow() {
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable("Rect",activity.mainImage.getBitmapRect());
+	}
 
+	@Override
+    public void onShow() {
+		Log.d("helaaa","On show");
 		activity.changeMode(EditImageActivity.MODE_CROP);
         activity.mCropPanel.setVisibility(View.VISIBLE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         activity.mainImage.setScaleEnabled(false);
         RectF r = activity.mainImage.getBitmapRect();
-        activity.mCropPanel.setCropRect(r);
+
+        if(rec!=null)
+		{
+			Log.d("helaaa","rec is not null");
+			activity.mCropPanel.setCropRect(rec);
+		}
+		else {
+        	Log.d("helaaaa","we were here too");
+			activity.mCropPanel.setCropRect(r);
+		}
+
+		if(sView!=null) {
+			Log.d("helaaa", "onShow: ka sview"+sView);
+			selctedTextView.setTextColor(UNSELECTED_COLOR);
+			RatioItem dataItem = (RatioItem) sView.getTag();
+			Log.d("helaa","Ratio is"+sView.getTag());
+			selctedTextView = sView;
+Log.d("helaaa","Color set");
+			sView.setTextColor(SELECTED_COLOR);
+			selctedTextView.setTextColor(SELECTED_COLOR);
+			if (rec!=null)
+			mCropPanel.setRatioCropRect(rec, dataItem.getRatio());
+
+		}
     }
 
 	private final class BackToMenuClick implements OnClickListener {
@@ -182,6 +224,7 @@ public class CropFragment extends BaseEditFragment {
 		mCropPanel.setVisibility(View.GONE);
 		activity.mainImage.setScaleEnabled(true);
 		if (selctedTextView != null) {
+			Log.d("helaaa","back to main me hua hai");
 			selctedTextView.setTextColor(UNSELECTED_COLOR);
 		}
 		mCropPanel.setRatioCropRect(activity.mainImage.getBitmapRect(), -1);
