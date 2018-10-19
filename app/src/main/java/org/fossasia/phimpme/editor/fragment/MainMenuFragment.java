@@ -3,6 +3,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("helaaa","Iska OnCreate");
         View view = inflater.inflate(R.layout.fragment_editor_main, container, false);
         context = getActivity();
         menu_filter = view.findViewById(R.id.menu_filter);
@@ -67,6 +69,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
                 activity.changeMode(EditImageActivity.MODE_FILTERS);
                 activity.sliderFragment.resetBitmaps();
                 activity.changeMiddleFragment(EditImageActivity.MODE_FILTERS);
+
                 break;
             case R.id.menu_enhance:
                 activity.changeMode(EditImageActivity.MODE_ENHANCE);
@@ -93,6 +96,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
         }
     }
     public void highLightSelectedOption(int mode) {
+
         menu_filter.setBackgroundColor(Color.TRANSPARENT);
         menu_enhance.setBackgroundColor(Color.TRANSPARENT);
         menu_adjust.setBackgroundColor(Color.TRANSPARENT);

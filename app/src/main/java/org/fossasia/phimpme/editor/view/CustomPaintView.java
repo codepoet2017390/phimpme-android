@@ -149,9 +149,6 @@ public class CustomPaintView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mDrawBit == null && !mDrawBit.isRecycled()) {
-           mDrawBit.recycle();
-        }
     }
 
     public void setEraser(boolean eraser) {

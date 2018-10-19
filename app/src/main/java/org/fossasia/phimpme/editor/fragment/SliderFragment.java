@@ -190,8 +190,9 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.seekbar_cancel:
-                //backToMain();
+                backToMain();
                 break;
+
             case R.id.seekbar_apply:
                 if (filterBit!=null) {
                     activity.changeMainBitmap(filterBit);
@@ -200,7 +201,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
                 if (EditImageActivity.effectType / 100 ==  EditImageActivity.MODE_FILTERS){
                     activity.filterFragment.onShow();
                 }
-                //backToMain();
+                backToMain();
                 break;
         }
     }
@@ -216,11 +217,11 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             switch (activity.mode)
             {
                 case EditImageActivity.MODE_FILTERS:
-                    activity.filterFragment.clearCurrentSelection();
+                    //activity.filterFragment.clearCurrentSelection();
                     break;
 
                 case EditImageActivity.MODE_ENHANCE:
-                    activity.enhanceFragment.clearCurrentSelection();
+                    //activity.enhanceFragment.clearCurrentSelection();
                     break;
 
                 default:

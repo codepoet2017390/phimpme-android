@@ -137,7 +137,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private int currentShowingIndex = -1;
 
     public ArrayList<Bitmap> bitmapsForUndo;
-    public MainMenuFragment mainMenuFragment;
+    public MainMenuFragment mainMenuFragment=new MainMenuFragment();
     public RecyclerMenuFragment filterFragment, enhanceFragment,stickerTypesFragment;
     public StickersFragment stickersFragment;
     public SliderFragment sliderFragment;
@@ -169,7 +169,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             mode =  savedInstanceState.getInt("PREVIOUS_FRAGMENT");
             check=true;
             //changeMiddleFragment();
-        //    changeBottomFragment(mode);
+            // changeBottomFragment(mode);
             mainBitmap=savedInstanceState.getParcelable("Edited Bitmap");
         }
         getData();
@@ -186,7 +186,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 .replace(R.id.controls_container, mainMenuFragment)
                 .commit();
         changeMiddleFragment(mode);
-
         setButtonsVisibility();
     }
 
@@ -200,7 +199,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             saveFilePath = bundle.getString(EXTRA_OUTPUT);
             requestCode = bundle.getInt("requestCode", 1);
             loadImage(filePath);
-            //highLightSelectedOption(mode);
             return;
         }
         SnackBarHandler.show(parentLayout,R.string.image_invalid);
@@ -239,9 +237,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         paintFragment = PaintFragment.newInstance();
         cropFragment = CropFragment.newInstance();
         rotateFragment = RotateFragment.newInstance();
-
-
-
     }
 
 

@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.editor.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -12,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +32,11 @@ import java.util.ArrayList;
 
 public class RecyclerMenuFragment extends BaseEditFragment {
 
-    RecyclerView recyclerView;
+    private static RecyclerView recyclerView;
     int MODE;
     private static ArrayList<Bitmap> filterThumbs;
     View fragmentView;
+    private EditImageActivity mActivity=activity;
     private StickerView mStickerView;
     static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6", "stickers/type7"};
     Bitmap currentBitmap,tempBitmap;
@@ -54,6 +57,10 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     }
 
     public void clearCurrentSelection(){
+        if(recyclerView==null)
+        {
+            Log.d("helaa","it was null");
+        }
         if(currentSelection != -1){
 
             mRecyclerAdapter.mViewHolder holder = (mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection);
@@ -121,13 +128,20 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-    //    if (filterThumbs != null)filterThumbs=null;
+        if (filterThumbs != null)
+            filterThumbs=null;
         MyApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override
     public void onShow() {
         if (MODE == EditImageActivity.MODE_FILTERS) {
+            if(activity==null)
+            {
+                Log.d("helaaa","were hereeeee");
+             activity=mActivity;
+            }
+            Log.d("helaaa","OnShowwwwwwww");
             if (this.currentBitmap != activity.mainBitmap) filterThumbs = null;
             this.currentBitmap = activity.mainBitmap;
             getFilterThumbs();
