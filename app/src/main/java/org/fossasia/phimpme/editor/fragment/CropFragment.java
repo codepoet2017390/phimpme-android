@@ -76,8 +76,6 @@ public class CropFragment extends BaseEditFragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		Log.d("helaaa","OnDetach");
-		//resetCropView();
 	}
 
 	private void resetCropView() {
@@ -130,14 +128,12 @@ public class CropFragment extends BaseEditFragment {
 		@Override
 		public void onClick(View v) {
 			TextView curTextView = (TextView) v;
-			Log.d("helaaa","here");
 			selctedTextView.setTextColor(UNSELECTED_COLOR);
 			RatioItem dataItem = (RatioItem) v.getTag();
 			selctedTextView = curTextView;
 			selctedTextView.setTextColor(SELECTED_COLOR);
 			sView=selctedTextView;
 			sView.setTag(v.getTag());
-			Log.d("helaaa", "onClick: ka sView"+sView);
 			mCropPanel.setRatioCropRect(activity.mainImage.getBitmapRect(),
 					dataItem.getRatio());
 		}
@@ -163,7 +159,6 @@ public class CropFragment extends BaseEditFragment {
 		});
 		if(savedInstanceState!=null)
 		{
-			Log.d("helaaa", "onActivityCreated: ka saved Instance ");
 			rec=savedInstanceState.getParcelable("Rect");
 		}
 		onShow();
@@ -177,7 +172,6 @@ public class CropFragment extends BaseEditFragment {
 
 	@Override
     public void onShow() {
-		Log.d("helaaa","On show");
 		activity.changeMode(EditImageActivity.MODE_CROP);
         activity.mCropPanel.setVisibility(View.VISIBLE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
@@ -187,21 +181,16 @@ public class CropFragment extends BaseEditFragment {
 
         if(rec!=null)
 		{
-			Log.d("helaaa","rec is not null");
 			activity.mCropPanel.setCropRect(rec);
 		}
 		else {
-        	Log.d("helaaaa","we were here too");
 			activity.mCropPanel.setCropRect(r);
 		}
 
 		if(sView!=null) {
-			Log.d("helaaa", "onShow: ka sview"+sView);
 			selctedTextView.setTextColor(UNSELECTED_COLOR);
 			RatioItem dataItem = (RatioItem) sView.getTag();
-			Log.d("helaa","Ratio is"+sView.getTag());
 			selctedTextView = sView;
-Log.d("helaaa","Color set");
 			sView.setTextColor(SELECTED_COLOR);
 			selctedTextView.setTextColor(SELECTED_COLOR);
 			if (rec!=null)
@@ -224,7 +213,6 @@ Log.d("helaaa","Color set");
 		mCropPanel.setVisibility(View.GONE);
 		activity.mainImage.setScaleEnabled(true);
 		if (selctedTextView != null) {
-			Log.d("helaaa","back to main me hua hai");
 			selctedTextView.setTextColor(UNSELECTED_COLOR);
 		}
 		mCropPanel.setRatioCropRect(activity.mainImage.getBitmapRect(), -1);
